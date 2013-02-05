@@ -1,0 +1,535 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<meta charset="utf-8" />
+	<title>Social Media test</title>
+	<style>
+		h1, h2, h3
+		{
+			margin: 0px;
+			padding: 0px;
+		}
+		fieldset
+		{
+			clear: both;
+			float: right;
+			font-family: monospace;
+		}
+		fieldset a, .prefix, .postfix
+		{
+			display: inline-block;
+			width: 50px;
+		}
+		.prefix
+		{
+			width: 200px;
+		}
+		.postfix
+		{
+			text-align: right;
+		}
+		abbr[title], acronym[title] {  /* just for IE; */
+			border-bottom: 1px dotted;
+		}
+		blockquote {
+			background: #eee;
+			margin: 0;
+			width: 100%;
+		}
+	</style>
+	<script type="text/javascript" src="http://platform.linkedin.com/in.js">
+		api_key: rb3ygw2x9pex
+		authorize: true
+	</script>
+</head>
+<body>
+	<fieldset class="page">
+		<legend>Page</legend>
+		<div class="social-facebook social-facebook-default">
+			<span class="prefix">Facebook standaard: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;1</span>
+		</div>
+		<div class="social-facebook social-facebook-likes">
+			<span class="prefix">Facebook likes: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;1</span>
+		</div>
+		<div class="social-facebook social-facebook-shares">
+			<span class="prefix">Facebook shares: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;3</span>
+		</div>
+		<div class="social-facebook social-facebook-clicks">
+			<span class="prefix">Facebook clicks: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;0</span>
+		</div>
+		<div class="social-facebook social-facebook-comments">
+			<span class="prefix">Facebook comments: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;6</span>
+		</div>
+		<div class="social-facebook social-facebook-total">
+			<span class="prefix">Facebook total: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;10</span>
+		</div>
+		<div class="social-twitter">
+			<span class="prefix">Twitter: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;13</span>
+		</div>
+		<div class="social-linkedin">
+			<span class="prefix">LinkedIn: </span><a href="#" target="_blank">-1</a><span class="postfix"><abbr title="Dit zal alleen op het geautoriseerde domein werken">&plusmn;7</abbr></span>
+		</div>
+		<div class="social-pinterest">
+			<span class="prefix">Pinterest: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;1</span>
+		</div>
+	</fieldset>
+	<fieldset class="profile">
+		<legend>Profile</legend>
+		<div class="social-facebook">
+			<span class="prefix">Facebook: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;176</span>
+		</div>
+		<div class="social-twitter">
+			<span class="prefix">Twitter: </span><a href="#" target="_blank">-1</a><span class="postfix">&plusmn;2092</span>
+		</div>
+		<div class="social-linkedin">
+			<span class="prefix">LinkedIn: </span><a href="#" target="_blank">-1</a><span class="postfix"><abbr title="Dit zal alleen op het geautoriseerde domein werken">&plusmn;47</abbr></span>
+		</div>
+		<div class="social-pinterest">
+			<span class="prefix"><del>Pinterest</del>: </span><a href="#" target="_blank">-1</a><span class="postfix"><abbr title="Profile>Count is niet mogelijk voor Pinterest">-1</abbr></span>
+		</div>
+	</fieldset>
+	<pre>
+<h1>
+	Social Media API
+</h1>
+
+<h2>
+	Social Media type
+</h2>
+	De volgende Social Media types zijn ondersteund [window.Social.MediaTypes.XXX]:
+	* Facebook
+	* Twitter
+	* LinkedIn
+	* Pinterest
+
+<h2>
+	Type
+</h2>
+	Informatie van de volgende types kan opgehaald worden [window.Social.YYY.zzz]:
+	* Page     - pagina url.
+	* Profile  - profiel.
+
+<h2>
+	Data
+</h2>
+	De volgende data kan per bovenstaande type opgehaald worden [window.Social.yyy.ZZZ]:
+	* Count    - aantal likes/shares/connecties.
+	* Url      - url naar Page of Profile.
+
+<h2>
+	Extra parameters
+</h2>
+	Bij type Page voor Pinterest is het vereist om in de Url een afbeelding toe te voegen, dat gebruikt wordt als op de link wordt geklikt.
+	<blockquote>	
+		window.Social.Page.Url(window.Social.MediaTypes.Pinterest, "http://test.nl", function (url) { $("selector").attr("href", url); }, { text: "test tekst", <strong>image: "http://test.jpg"</strong> });
+	</blockquote>
+	Bij type Page is het mogelijk om in de Url tekst toe te voegen, dat gebruikt wordt als op de link wordt geklikt. 
+	Echter voor Facebook wordt deze tekst als alternatief gebruikt als in de url niets in de metadata gevonden wordt.
+
+	Bij type Page is het mogelijk om voor media type Facebook meer data op te halen [window.Social.MediaTypes.Facebook.XXX]:
+	* Likes    - likes (standaard).
+	* Shares   - shares.
+	* Clicks   - kliks.
+	* Comments - reacties.
+	* Total    - totaal van bovenstaanden.
+
+<h2>
+	Let op
+</h2>
+	Url data wordt meteen gegenereerd, Count data gaat via AJAX en duurt een paar seconden (afhankelijk van de internet verbinding) voordat dit resultaat geeft.
+	
+	Er is voor Pinterest geen officiele API. Het is niet mogelijk om voor Profile de Count te verkrijgen.
+
+	Bij Count van type Profile voor LinkedIn is het noodzakelijk dat er eerst een API key verkregen dient te worden. 
+	Dit kan via <a href="https://www.linkedin.com/secure/developer">https://www.linkedin.com/secure/developer</a>. Voeg daarna de volgende code met API key toe in de &lt;head&gt; van de html pagina:
+
+	<blockquote>
+		&lt;script type="text/javascript" src="http://platform.linkedin.com/in.js"&gt;
+			api_key: XXXXXXXXX
+			authorize: true
+		&lt;/script&gt;
+	</blockquote>
+
+<h2>
+	Voorbeeld met uitleg
+</h2>
+	<blockquote>
+	    window.Social.YYY.ZZZ(window.Social.MediaTypes.XXX, "http://test.nl", function(data) { $("selector").text(data); }, window.Social.MediaTypes.Facebook.Likes);
+	</blockquote>
+	                  ^^^ ^^^                          ^^^  ^^^^^^^^^^^^^^^^           ^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	                  |   |                            |    |                          |       |                            |
+	Page, Profile ----'   |                            |    |                          |       |                            |
+	Count, Url -----------'                            |    |                          |       |                            |
+	Media type: Facebook, Twitter, LinkedIn -----------'    |                          |       |                            |
+	Pagine url of profile id -------------------------------'                          |       |                            |
+	Return data, kan Count of Url zijn ------------------------------------------------'       |                            |
+	Callback functie --------------------------------------------------------------------------'                            |
+	Extra parameters, kan tekst of type facebook (Likes, Shares, Clicks, Comments, Total) ----------------------------------'
+
+
+	Bekijk de broncode voor meer voorbeelden!
+
+<h2>
+	Download
+</h2>
+<h3>
+	Minified
+</h3>
+	Kopieer de code hieronder:
+	<blockquote>
+		if(!window.Social){(function(){"use strict";window.Social={version:3.1,Page:{Count:function(e,t,n,r){switch(e.toLowerCase()){case Social.MediaTypes.Facebook.toLowerCase():{var i="https://api.facebook.com/method/fql.query?format=json&query=";$.getJSON(i+encodeURIComponent("SELECT like_count, share_count, click_count, comment_count, total_count FROM link_stat WHERE url = '"+t+"' LIMIT 1"),function(e){window.console&&console.log("Social.Page.Count > Facebook",e,r);if(e&&typeof e[0]!=="undefined"){switch((r||"").toLowerCase()){default:case Social.MediaTypes.Facebook.Likes.toLowerCase():{n&&n(e[0].like_count);break};case Social.MediaTypes.Facebook.Shares.toLowerCase():{n&&n(e[0].share_count);break};case Social.MediaTypes.Facebook.Clicks.toLowerCase():{n&&n(e[0].click_count);break};case Social.MediaTypes.Facebook.Comments.toLowerCase():{n&&n(e[0].comment_count);break};case Social.MediaTypes.Facebook.Total.toLowerCase():{n&&n(e[0].total_count);break}}}});break};case Social.MediaTypes.Twitter.toLowerCase():{var i="http://cdn.api.twitter.com/1/urls/count.json?callback=?&url=";$.getJSON(i+encodeURIComponent(t),function(e){window.console&&console.log("Social.Page.Count > Twitter",e,r);if(e&&typeof e.count!=="undefined"){n&&n(e.count)}});break};case Social.MediaTypes.LinkedIn.toLowerCase():{var i="http://www.linkedin.com/countserv/count/share?format=jsonp&callback=?&url=";$.getJSON(i+encodeURIComponent(t),function(e){window.console&&console.log("Social.Page.Count > LinkedIn",e,r);if(e&&typeof e.count!=="undefined"){n&&n(e.count)}});break};case Social.MediaTypes.Pinterest.toLowerCase():{var i="http://api.pinterest.com/v1/urls/count.json?callback=?&url=";$.getJSON(i+encodeURIComponent(t),function(e){window.console&&console.log("Social.Page.Count > Pinterest",e,r);if(e&&typeof e.count!=="undefined"){n&&n(e.count)}});break}}},Url:function(e,t,n,r){switch(e.toLowerCase()){case Social.MediaTypes.Facebook.toLowerCase():{var i="https://www.facebook.com/sharer.php",s=i+"?u="+encodeURIComponent(t);if(r){s+="&t="+encodeURIComponent(r)}n&&n(s);break};case Social.MediaTypes.Twitter.toLowerCase():{var i="https://twitter.com/intent/tweet",s=i+"?original_referer="+encodeURIComponent(t)+"&source=tweetbutton&url="+encodeURIComponent(t);if(r){s+="&text="+encodeURIComponent(r)}n&&n(s);break};case Social.MediaTypes.LinkedIn.toLowerCase():{var i="http://www.linkedin.com/shareArticle",s=i+"?url="+encodeURIComponent(t)+"&original_referer="+encodeURIComponent(t)+"&source="+encodeURIComponent(t);if(r){s+="&title="+encodeURIComponent(r)+"&summary="+encodeURIComponent(r)}n&&n(s);break};case Social.MediaTypes.Pinterest.toLowerCase():{var i="http://pinterest.com/pin/create/button/",s=i+"?url="+encodeURIComponent(t),o=t;if(r&&r.image){o=r.image}s+="&media="+encodeURIComponent(o);if(r&&r.text){s+="&description="+encodeURIComponent(r.text)}n&&n(s);break}}}},Profile:{Count:function(e,t,n,r){switch(e.toLowerCase()){case Social.MediaTypes.Facebook.toLowerCase():{var i="https://graph.facebook.com/"+encodeURIComponent(t)+"?callback=?";$.getJSON(i,function(e){window.console&&console.log("Social.Profile.Count > Facebook",e,r);if(e&&typeof e.likes!=="undefined"){n&&n(e.likes)}});break};case Social.MediaTypes.Twitter.toLowerCase():{var i="http://api.twitter.com/1/users/show.json?callback=?";$.getJSON(i+"&screen_name="+encodeURIComponent(t),function(e){window.console&&console.log("Social.Profile.Count > Twitter",e,r);if(e&&typeof e.followers_count!=="undefined"){n&&n(e.followers_count)}});break};case Social.MediaTypes.LinkedIn.toLowerCase():{if(window.IN&&IN.Event){IN.Event.on(IN,"frameworkLoaded",function(){if(IN.API){var e="/companies/"+encodeURIComponent(t)+":(num-followers)";IN.API.Raw(e).result(function(e){window.console&&console.log("Social.Profile.Count > LinkedIn",e,r);if(e&&typeof e.numFollowers!=="undefined"){n&&n(e.numFollowers)}})}})}break}}},Url:function(e,t,n,r){switch(e.toLowerCase()){case Social.MediaTypes.Facebook.toLowerCase():{var i="http://www.facebook.com/",s=i+t;n&&n(s);break};case Social.MediaTypes.Twitter.toLowerCase():{var i="https://twitter.com/",s=i+t;n&&n(s);break};case Social.MediaTypes.LinkedIn.toLowerCase():{var i="http://www.linkedin.com/company/",s=i+t;n&&n(s);break};case Social.MediaTypes.Pinterest.toLowerCase():{var i="http://pinterest.com/",s=i+t;n&&n(s);break}}}},MediaTypes:{Facebook:{toLowerCase:function(){return"Facebook".toLowerCase()},Likes:"Likes",Shares:"Shares",Clicks:"Clicks",Comments:"Comments",Total:"Total"},Twitter:"Twitter",LinkedIn:"LinkedIn",Pinterest:"Pinterest"}};window.Social.HumanizeCount=function(e){if(e>999&&e<=999999){e=Math.floor(e/1e3)+"K+"}else if(e>999999&&e<=999999999){e=Math.floor(e/1e6)+"M+"}else if(e>999999999){e="++"}return e}})()}
+	</blockquote>
+<h3>
+	Non-minified
+</h3>
+	Zie broncode.
+
+<h2>
+	Changelog
+</h2>
+
+	* v1	- Eerste versie.
+	* v2	- Herschreven.
+	* v3	- FIXED: bug in encoden van berichten.
+	* v3.1	- FIXED: bug in Facebook profile count.
+
+	
+<h2>
+	Veel plezier!
+</h2>
+
+	</pre>
+	<script type="text/javascript">
+
+		if (!window.Social) {
+
+			(function () {
+
+				"use strict";
+
+				window.Social = {
+					version: 3.1,
+					Page: {
+						Count: function (mediaType, url, callback, parameters) {
+							switch (mediaType.toLowerCase()) {
+								case Social.MediaTypes.Facebook.toLowerCase():
+									{
+										var API_URL = "https://api.facebook.com/method/fql.query?format=json&query=";
+
+										$.getJSON(API_URL + encodeURIComponent("SELECT like_count, share_count, click_count, comment_count, total_count FROM link_stat WHERE url = '" + url + "' LIMIT 1"), function (data) {
+											window.console && console.log("Social.Page.Count > Facebook", data, parameters);
+
+											if (data && typeof data[0] !== "undefined") {
+												switch ((parameters || "").toLowerCase()) {
+													case Social.MediaTypes.Facebook.Likes.toLowerCase():
+													default:
+														{
+															callback && callback(data[0].like_count);
+															break;
+														}
+													case Social.MediaTypes.Facebook.Shares.toLowerCase():
+														{
+															callback && callback(data[0].share_count);
+															break;
+														}
+													case Social.MediaTypes.Facebook.Clicks.toLowerCase():
+														{
+															callback && callback(data[0].click_count);
+															break;
+														}
+													case Social.MediaTypes.Facebook.Comments.toLowerCase():
+														{
+															callback && callback(data[0].comment_count);
+															break;
+														}
+													case Social.MediaTypes.Facebook.Total.toLowerCase():
+														{
+															callback && callback(data[0].total_count);
+															break;
+														}
+												}
+											}
+										});
+
+										break;
+									}
+								case Social.MediaTypes.Twitter.toLowerCase():
+									{
+										var API_URL = "http://cdn.api.twitter.com/1/urls/count.json?callback=?&url=";
+
+										$.getJSON(API_URL + encodeURIComponent(url), function (data) {
+											window.console && console.log("Social.Page.Count > Twitter", data, parameters);
+
+											if (data && typeof data.count !== "undefined") {
+												callback && callback(data.count);
+											}
+										});
+
+										break;
+									}
+								case Social.MediaTypes.LinkedIn.toLowerCase():
+									{
+										var API_URL = "http://www.linkedin.com/countserv/count/share?format=jsonp&callback=?&url=";
+
+										$.getJSON(API_URL + encodeURIComponent(url), function (data) {
+											window.console && console.log("Social.Page.Count > LinkedIn", data, parameters);
+
+											if (data && typeof data.count !== "undefined") {
+												callback && callback(data.count);
+											}
+										});
+
+										break;
+									}
+								case Social.MediaTypes.Pinterest.toLowerCase():
+									{
+										var API_URL = "http://api.pinterest.com/v1/urls/count.json?callback=?&url=";
+
+										$.getJSON(API_URL + encodeURIComponent(url), function (data) {
+											window.console && console.log("Social.Page.Count > Pinterest", data, parameters);
+
+											if (data && typeof data.count !== "undefined") {
+												callback && callback(data.count);
+											}
+										});
+
+										break;
+									}
+							}
+						},
+						Url: function (mediaType, url, callback, parameters) {
+							switch (mediaType.toLowerCase()) {
+								case Social.MediaTypes.Facebook.toLowerCase():
+									{
+										var API_URL = "https://www.facebook.com/sharer.php",
+											pageUrl = API_URL + "?u=" + encodeURIComponent(url);
+
+										if (parameters) {
+											pageUrl += "&t=" + encodeURIComponent(parameters);
+										}
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.Twitter.toLowerCase():
+									{
+										var API_URL = "https://twitter.com/intent/tweet",
+											pageUrl = API_URL + "?original_referer=" + encodeURIComponent(url) + "&source=tweetbutton&url=" + encodeURIComponent(url);
+
+										if (parameters) {
+											pageUrl += "&text=" + encodeURIComponent(parameters);
+										}
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.LinkedIn.toLowerCase():
+									{
+										var API_URL = "http://www.linkedin.com/shareArticle",
+											pageUrl = API_URL + "?url=" + encodeURIComponent(url) + "&original_referer=" + encodeURIComponent(url) + "&source=" + encodeURIComponent(url);
+
+										if (parameters) {
+											pageUrl += "&title=" + encodeURIComponent(parameters) + "&summary=" + encodeURIComponent(parameters);
+										}
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.Pinterest.toLowerCase():
+									{
+										var API_URL = "http://pinterest.com/pin/create/button/",
+											pageUrl = API_URL + "?url=" + encodeURIComponent(url),
+											imageUrl = url;
+
+
+										if (parameters && parameters.image) {
+											imageUrl = parameters.image;
+										}
+										pageUrl += "&media=" + encodeURIComponent(imageUrl);
+
+										if (parameters && parameters.text) {
+											pageUrl += "&description=" + encodeURIComponent(parameters.text);
+										}
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+							}
+						}
+					},
+					Profile: {
+						Count: function (mediaType, profile, callback, parameters) {
+							switch (mediaType.toLowerCase()) {
+								case Social.MediaTypes.Facebook.toLowerCase():
+									{
+										var API_URL = "https://graph.facebook.com/" + encodeURIComponent(profile) + "?callback=?";
+
+										$.getJSON(API_URL, function (data) {
+											window.console && console.log("Social.Profile.Count > Facebook", data, parameters);
+
+											if (data && typeof data.likes !== "undefined") {
+												callback && callback(data.likes);
+											}
+										});
+
+										break;
+									}
+								case Social.MediaTypes.Twitter.toLowerCase():
+									{
+										var API_URL = "http://api.twitter.com/1/users/show.json?callback=?";
+
+										$.getJSON(API_URL + "&screen_name=" + encodeURIComponent(profile), function (data) {
+											window.console && console.log("Social.Profile.Count > Twitter", data, parameters);
+
+											if (data && typeof data.followers_count !== "undefined") {
+												callback && callback(data.followers_count);
+											}
+										});
+
+										break;
+									}
+								case Social.MediaTypes.LinkedIn.toLowerCase():
+									{
+										if (window.IN && IN.Event) {
+											IN.Event.on(IN, "frameworkLoaded", function () {
+
+												if (IN.API) {
+													var API_URL = "/companies/" + encodeURIComponent(profile) + ":(num-followers)";
+
+													IN.API.Raw(API_URL).result(function (data) {
+														window.console && console.log("Social.Profile.Count > LinkedIn", data, parameters);
+
+														if (data && typeof data.numFollowers !== "undefined") {
+															callback && callback(data.numFollowers);
+														}
+													});
+												}
+											});
+										}
+
+										break;
+									}
+							}
+						},
+						Url: function (mediaType, profile, callback, parameters) {
+							switch (mediaType.toLowerCase()) {
+								case Social.MediaTypes.Facebook.toLowerCase():
+									{
+										var API_URL = "http://www.facebook.com/",
+											pageUrl = API_URL + profile;
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.Twitter.toLowerCase():
+									{
+										var API_URL = "https://twitter.com/",
+											pageUrl = API_URL + profile;
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.LinkedIn.toLowerCase():
+									{
+										var API_URL = "http://www.linkedin.com/company/",
+											pageUrl = API_URL + profile;
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+								case Social.MediaTypes.Pinterest.toLowerCase():
+									{
+										var API_URL = "http://pinterest.com/",
+											pageUrl = API_URL + profile;
+
+										callback && callback(pageUrl);
+
+										break;
+									}
+							}
+						}
+					},
+					MediaTypes: {
+						Facebook: {
+							toLowerCase: function () { return "Facebook".toLowerCase(); },
+							Likes: "Likes",
+							Shares: "Shares",
+							Clicks: "Clicks",
+							Comments: "Comments",
+							Total: "Total"
+						},
+						Twitter: "Twitter",
+						LinkedIn: "LinkedIn",
+						Pinterest: "Pinterest"
+					}
+				};
+
+				window.Social.HumanizeCount = function (count) {
+					if (count > 999 && count <= 999999) {
+						count = Math.floor(count / 1000) + "K+";
+					}
+					else if (count > 999999 && count <= 999999999) {
+						count = Math.floor(count / 1000000) + "M+";
+					}
+					else if (count > 999999999) {
+						count = "++";
+					}
+					return count;
+				};
+
+			})();
+		}
+
+
+		$(function () {
+
+			// Constants;
+			var PAGE_URL = "http://www.puurmakelaars.nl/"/*document.location.href*/;
+			var PAGE_URL_2 = "http://www.puurmakelaars.nl/dit-is-puur/"/*document.location.href*/;
+			var TEXT = "abc 123 <html> & &amp; € &euro;";
+			var IMAGE = "http://www.puurmakelaars.nl/RealEstate/Original/te-koop-overveen-julianalaan-162-15044627.jpg";
+			var PROFILE_1 = "puurmakelaars";
+			var PROFILE_2 = "613970";
+
+			// Facebook;
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-default a").text(count); /* default */ });
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-likes a").text(count); }, window.Social.MediaTypes.Facebook.Likes);
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-shares a").text(count); }, window.Social.MediaTypes.Facebook.Shares);
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-clicks a").text(count); }, window.Social.MediaTypes.Facebook.Clicks);
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-comments a").text(count); }, window.Social.MediaTypes.Facebook.Comments);
+			window.Social.Page.Count(window.Social.MediaTypes.Facebook, PAGE_URL, function (count) { $(".page .social-facebook-total a").text(count); }, window.Social.MediaTypes.Facebook.Total);
+			window.Social.Page.Url(window.Social.MediaTypes.Facebook, PAGE_URL, function (url) { $(".page .social-facebook a, .page .social-facebook a").attr("href", url); }, TEXT);
+			window.Social.Profile.Count(window.Social.MediaTypes.Facebook, PROFILE_1, function (count) { $(".profile .social-facebook a").text(count); });
+			window.Social.Profile.Url(window.Social.MediaTypes.Facebook, PROFILE_1, function (url) { $(".profile .social-facebook a").attr("href", url); });
+
+			// Twitter;
+			window.Social.Page.Count(window.Social.MediaTypes.Twitter, PAGE_URL, function (count) { $(".page .social-twitter a").text(count); });
+			window.Social.Page.Url(window.Social.MediaTypes.Twitter, PAGE_URL, function (url) { $(".page .social-twitter a").attr("href", url); }, TEXT.replace(PAGE_URL, "") /* we don't want double urls */);
+			window.Social.Profile.Count(window.Social.MediaTypes.Twitter, PROFILE_1, function (count) { $(".profile .social-twitter a").text(count); });
+			window.Social.Profile.Url(window.Social.MediaTypes.Twitter, PROFILE_1, function (url) { $(".profile .social-twitter a").attr("href", url); });
+
+			// LinkedIn;
+			window.Social.Page.Count(window.Social.MediaTypes.LinkedIn, PAGE_URL, function (count) { $(".page .social-linkedin a").text(count); });
+			window.Social.Page.Url(window.Social.MediaTypes.LinkedIn, PAGE_URL, function (url) { $(".page .social-linkedin a").attr("href", url); }, TEXT);
+			window.Social.Profile.Count(window.Social.MediaTypes.LinkedIn, PROFILE_2, function (count) { $(".profile .social-linkedin a").text(count); });
+			window.Social.Profile.Url(window.Social.MediaTypes.LinkedIn, PROFILE_2, function (url) { $(".profile .social-linkedin a").attr("href", url); });
+
+			// Pinterest;
+			window.Social.Page.Count(window.Social.MediaTypes.Pinterest, PAGE_URL_2, function (count) { $(".page .social-pinterest a").text(count); });
+			window.Social.Page.Url(window.Social.MediaTypes.Pinterest, PAGE_URL_2, function (url) { $(".page .social-pinterest a").attr("href", url); }, { text: TEXT, image: IMAGE });
+			//window.Social.Profile.Count(window.Social.MediaTypes.Pinterest, PROFILE_1, function (count) { $(".profile .social-pinterest a").text(count); });
+			window.Social.Profile.Url(window.Social.MediaTypes.Pinterest, PROFILE_1, function (url) { $(".profile .social-pinterest a").attr("href", url); });
+
+		});
+
+	</script>
+</body>
+</html>
